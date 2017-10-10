@@ -54,5 +54,5 @@ services:
 And then execute:
 
 ```bash
-docker-compose run rsnapshot daily
+docker-compose run --rm rsnapshot daily
 ```
