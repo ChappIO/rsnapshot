@@ -1,0 +1,88 @@
+#################################################
+# rsnapshot.conf - rsnapshot configuration file #
+#################################################
+#                                               #
+# PLEASE BE AWARE OF THE FOLLOWING RULE:        #
+#                                               #
+# This file requires tabs between elements      #
+#                                               #
+#################################################
+
+#######################
+# CONFIG FILE VERSION #
+#######################
+
+config_version	1.2
+
+###########################
+# SNAPSHOT ROOT DIRECTORY #
+###########################
+
+snapshot_root	/snapshots
+
+#################################
+# EXTERNAL PROGRAM DEPENDENCIES #
+#################################
+
+cmd_cp		/bin/cp
+cmd_rm		/bin/rm
+cmd_rsync	/usr/bin/rsync
+cmd_ssh		/usr/bin/ssh
+cmd_logger	/usr/bin/logger
+
+#########################################
+#     BACKUP LEVELS / INTERVALS         #
+# Must be unique and in ascending order #
+# e.g. alpha, beta, gamma, etc.         #
+#########################################
+
+retain	daily	6
+retain	weekly	3
+retain	monthly	11
+
+############################################
+#              GLOBAL OPTIONS              #
+# All are optional, with sensible defaults #
+############################################
+
+# Verbose level, 1 through 5.
+# 1     Quiet           Print fatal errors only
+# 2     Default         Print errors and warnings only
+# 3     Verbose         Show equivalent shell commands being executed
+# 4     Extra Verbose   Show extra verbose information
+# 5     Debug mode      Everything
+#
+verbose		3
+
+lockfile	/var/run/rsnapshot.pid
+
+###############################
+### BACKUP POINTS / SCRIPTS ###
+###############################
+
+# LOCALHOST
+backup	/home/		localhost/
+backup	/etc/		localhost/
+backup	/usr/local/	localhost/
+#backup	/var/log/rsnapshot		localhost/
+#backup	/etc/passwd	localhost/
+#backup	/home/foo/My Documents/		localhost/
+#backup	/foo/bar/	localhost/	one_fs=1, rsync_short_args=-urltvpog
+#backup_script	/usr/local/bin/backup_pgsql.sh	localhost/postgres/
+# You must set linux_lvm_* parameters below before using lvm snapshots
+#backup	lvm://vg0/xen-home/	lvm-vg0/xen-home/
+
+# EXAMPLE.COM
+#backup_exec	/bin/date "+ backup of example.com started at %c"
+#backup	root@example.com:/home/	example.com/	+rsync_long_args=--bwlimit=16,exclude=core
+#backup	root@example.com:/etc/	example.com/	exclude=mtab,exclude=core
+#backup_exec	ssh root@example.com "mysqldump -A > /var/db/dump/mysql.sql"
+#backup	root@example.com:/var/db/dump/	example.com/
+#backup_exec	/bin/date "+ backup of example.com ended at %c"
+
+# CVS.SOURCEFORGE.NET
+#backup_script	/usr/local/bin/backup_rsnapshot_cvsroot.sh	rsnapshot.cvs.sourceforge.net/
+
+# RSYNC.SAMBA.ORG
+#backup	rsync://rsync.samba.org/rsyncftp/	rsync.samba.org/rsyncftp/
+
